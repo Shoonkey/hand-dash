@@ -8,6 +8,6 @@ html, body {
 }
 
 #app {
-  height: 100vh;
-  overflow-y: hidden;
+  display: flex;
+  min-height: 100vh;
 }
