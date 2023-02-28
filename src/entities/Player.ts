@@ -1,4 +1,5 @@
 import P5 from "p5";
+import { GROUND_HEIGHT } from "../constants";
 
 interface PlayerProps {
   size: number;
@@ -12,25 +13,45 @@ class Player {
   pos: P5.Vector;
   speed: P5.Vector;
   acceleration: P5.Vector;
-
-  // mass: number;
   size: number;
+  isJumping: boolean;
 
   constructor(p5: P5, { size, initialX, initialY }: PlayerProps) {
     this._p5 = p5;
+
     this.pos = p5.createVector(initialX, initialY);
-    this.speed = p5.createVector();
-    this.acceleration = p5.createVector(0, 1);
     this.size = size;
+
+    this.speed = p5.createVector();
+    this.acceleration = p5.createVector();
+
+    this.isJumping = false;
+  }
+
+  applyForce(force: P5.Vector) { 
+    this.acceleration.add(force);
+  }
+
+  jump() {
+    if (this.isJumping)
+      return;
+    
+    this.applyForce(this._p5.createVector(0, -15));
+    this.isJumping = true;
   }
 
   update() {
     const p5 = this._p5;
+
     this.speed.add(this.acceleration);
     this.pos.add(this.speed);
+    this.acceleration.mult(0);
 
-    if (this.pos.y > p5.height - this.size)
-      this.pos.y = p5.height - this.size;
+    if (this.pos.y > p5.height - this.size - GROUND_HEIGHT) {
+      this.speed.mult(0);
+      this.pos.y = p5.height - this.size - GROUND_HEIGHT;
+      this.isJumping = false;
+    }
   }
 
   draw() {
