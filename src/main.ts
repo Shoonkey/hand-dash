@@ -6,8 +6,6 @@ import Obstacle from "./entities/Obstacle";
 import { GROUND_HEIGHT, PLAYER_SIZE } from "./constants";
 
 const sketch = (p5: P5) => {
-  let stage: "menu" | "playing" | "game-lost";
-
   let player: Player;
   let ground: Ground;
   let obstacles: Obstacle[];
@@ -15,8 +13,6 @@ const sketch = (p5: P5) => {
   p5.setup = () => {
     const canvas = p5.createCanvas(p5.windowWidth, p5.windowHeight);
     canvas.parent("#app");
-
-    stage = "menu";
 
     ground = new Ground(p5, { height: GROUND_HEIGHT });
     player = new Player(p5, {
@@ -38,7 +34,7 @@ const sketch = (p5: P5) => {
   };
 
   p5.draw = () => {
-    p5.background("#2b2b2b");
+    p5.background("#80FFFB");
 
     ground.draw();
 
@@ -49,11 +45,16 @@ const sketch = (p5: P5) => {
       obstacles[i].update();
       obstacles[i].draw();
 
-      if (obstacles[i].collidesWith(player)) stage = "game-lost";
+      if (obstacles[i].collidesWith(player)) {
+        p5.textAlign(p5.CENTER);
+        p5.textSize(32);
+        p5.text("Obstacle colliding with player!", p5.width / 2, 50);
+      }
 
       if (obstacles[i].isOffscreen()) obstacles.splice(i, 1);
     }
 
+    // TODO: figure out how to spawn randomly
     // this spawns one obstacle every second
     // if (p5.frameCount % 60 === 0) {
     //   obstacles.push(
