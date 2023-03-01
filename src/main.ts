@@ -1,9 +1,9 @@
 import P5 from "p5";
 
-import Ground from "./entities/Ground";
-import Player from "./entities/Player";
-import Obstacle from "./entities/Obstacle";
-import { GROUND_HEIGHT, PLAYER_SIZE } from "./constants";
+import Ground from "./game/Ground";
+import Player from "./game/Player";
+import Obstacle from "./game/Obstacle";
+import { GROUND_HEIGHT, PLAYER_SIZE } from "./game/constants";
 
 const sketch = (p5: P5) => {
   let player: Player;

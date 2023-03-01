@@ -1,5 +1,6 @@
 import P5 from "p5";
-import { GRAVITY, GROUND_HEIGHT } from "../constants";
+
+import { GRAVITY, GROUND_HEIGHT } from "./constants";
 
 interface PlayerProps {
   size: number;
@@ -30,14 +31,13 @@ class Player {
     this.isJumping = false;
   }
 
-  applyForce(force: P5.Vector) { 
+  applyForce(force: P5.Vector) {
     this.acceleration.add(force);
   }
 
   jump() {
-    if (this.isJumping)
-      return;
-    
+    if (this.isJumping) return;
+
     this.applyForce(this._p5.createVector(0, -15));
     this.isJumping = true;
   }
@@ -62,7 +62,7 @@ class Player {
     const p5 = this._p5;
 
     p5.push();
-    
+
     p5.fill("purple");
     p5.noStroke();
     p5.rect(this.pos.x, this.pos.y, this.size, this.size);

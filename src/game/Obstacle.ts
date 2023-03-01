@@ -1,6 +1,6 @@
 import P5 from "p5";
 
-import { GROUND_HEIGHT, SPEED } from "../constants";
+import { GROUND_HEIGHT, SPEED } from "./constants";
 import Player from "./Player";
 
 interface ObstacleProps {
@@ -23,14 +23,11 @@ class Obstacle {
     { spikeWidth, spikeHeight, amountOfSpikes }: ObstacleProps
   ) {
     this._p5 = p5;
-    this.pos = p5.createVector(
-      p5.width,
-      p5.height - GROUND_HEIGHT
-    );
+    this.pos = p5.createVector(p5.width, p5.height - GROUND_HEIGHT);
     this.spikeWidth = spikeWidth;
     this.spikeHeight = spikeHeight;
     this.amountOfSpikes = amountOfSpikes;
-    this.color = "black"
+    this.color = "black";
   }
 
   isOffscreen() {
@@ -38,7 +35,10 @@ class Obstacle {
   }
 
   collidesWith(player: Player) {
-    return player.pos.x + player.size >= this.pos.x && player.pos.y + player.size >= this.pos.y;
+    return (
+      player.pos.x + player.size >= this.pos.x &&
+      player.pos.y + player.size >= this.pos.y
+    );
   }
 
   update() {
