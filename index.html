@@ -3,11 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="stylesheet" type="text/css" href="/global.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hand Dash</title>
   </head>
   <body>
-    <main id="app"></main>
+    <main id="app">
+      <div id="canvas-container">
+        <video id="camera-video" tabindex="-1"></video>
+      </div>
+      <div id="help-text">
+        <p id="how-to-play">Tap <kbd>Space</kbd> to jump!</p>
+        <p id="camera-not-supported">
+          Camera is not supported. You can still play with the keyboard!
+        </p>
+        <button id="change-controls-btn">Use gestures with camera too</button>
+      </div>
+    </main>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

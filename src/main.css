@@ -1,0 +1,46 @@
+#app {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: "Kanit", sans-serif;
+  align-items: center;
+  background: #2b2b2b;
+  min-height: 100vh;
+  gap: 1rem;
+}
+
+#help-text {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #e2e2e2;
+}
+
+#help-text button {
+  border: none;
+  border-radius: 8px;
+  padding: 1rem;
+  background: #5cfafa;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#help-text button:hover {
+  background: #38fcfc;
+}
+
+#canvas-container {
+  position: relative;
+}
+
+#canvas-container canvas {
+  border-radius: 24px;
+}
+
+#camera-video {
+  transform: scaleX(-1);
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  border-radius: 16px;
+}
