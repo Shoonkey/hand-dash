@@ -1,5 +1,5 @@
 import P5 from "p5";
-import { GROUND_HEIGHT } from "../constants";
+import { GRAVITY, GROUND_HEIGHT } from "../constants";
 
 interface PlayerProps {
   size: number;
@@ -8,13 +8,14 @@ interface PlayerProps {
 }
 
 class Player {
-  _p5: P5;
+  private _p5: P5;
 
   pos: P5.Vector;
   speed: P5.Vector;
   acceleration: P5.Vector;
   size: number;
   isJumping: boolean;
+  gravity: P5.Vector;
 
   constructor(p5: P5, { size, initialX, initialY }: PlayerProps) {
     this._p5 = p5;
@@ -24,6 +25,7 @@ class Player {
 
     this.speed = p5.createVector();
     this.acceleration = p5.createVector();
+    this.gravity = p5.createVector(0, GRAVITY);
 
     this.isJumping = false;
   }
@@ -42,6 +44,8 @@ class Player {
 
   update() {
     const p5 = this._p5;
+
+    this.applyForce(this.gravity);
 
     this.speed.add(this.acceleration);
     this.pos.add(this.speed);

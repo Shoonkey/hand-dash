@@ -5,7 +5,8 @@ interface GroundProps {
 }
 
 class Ground {
-  _p5: P5;
+  private _p5: P5;
+  
   height: number;
 
   constructor(p5: P5, { height }: GroundProps) {
