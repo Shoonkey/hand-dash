@@ -53,18 +53,17 @@ const sketch = (p5: P5) => {
 
       if (obstacles[i].isOffscreen()) obstacles.splice(i, 1);
     }
-
-    // TODO: figure out how to spawn randomly
-    // this spawns one obstacle every second
-    // if (p5.frameCount % 60 === 0) {
-    //   obstacles.push(
-    //     new Obstacle(p5, {
-    //       spikeWidth: PLAYER_SIZE * 0.5,
-    //       spikeHeight: PLAYER_SIZE * 0.7,
-    //       amountOfSpikes: 3,
-    //     })
-    //   );
-    // }
+  
+    // one obstacle appears every few seconds
+    if (p5.frameCount % 240 === 0) {
+      obstacles.push(
+        new Obstacle(p5, {
+          spikeWidth: PLAYER_SIZE * 0.5,
+          spikeHeight: PLAYER_SIZE * 0.7,
+          amountOfSpikes: 3,
+        })
+      );
+    }
   };
 
   p5.keyPressed = (event: KeyboardEvent) => {
