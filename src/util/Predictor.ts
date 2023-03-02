@@ -1,4 +1,4 @@
-import { HandPose, load as loadHandposeModel } from '@tensorflow-models/handpose';
+import { HandPose, AnnotatedPrediction, load as loadHandposeModel } from '@tensorflow-models/handpose';
 import { GestureEstimator } from "fingerpose"
 
 import { PaperGesture, RockGesture } from "./gestures";
@@ -16,16 +16,23 @@ class Predictor {
     return this;
   }
 
-  async predictGesture(cameraVideo: HTMLVideoElement) {
-    if (!this.model || !this.gestureEstimator)
+  async estimateHands(cameraVideo: HTMLVideoElement): Promise<AnnotatedPrediction | undefined> {
+    if (!this.model)
       return;
 
     const predictions = await this.model.estimateHands(cameraVideo);
-
+    
     if (predictions.length === 0)
+      return
+    
+    return predictions[0];
+  }
+
+  async predictGesture(handEstimate: AnnotatedPrediction) {
+    if (!this.gestureEstimator || !handEstimate)
       return;
     
-    const estimations = this.gestureEstimator.estimate(predictions[0].landmarks, 9);
+    const estimations = this.gestureEstimator.estimate(handEstimate.landmarks, 9);
 
     if (estimations.gestures.length === 0)
       return;

@@ -37,7 +37,7 @@
   border-radius: 24px;
 }
 
-#camera-video {
+#camera-video, #hand-canvas {
   transform: scaleX(-1);
   position: absolute;
   top: 16px;

@@ -2,7 +2,7 @@ async function getCameraStream() {
   const stream = await navigator.mediaDevices.getUserMedia({
     audio: false,
     video: {
-      height: 200,
+      width: 320, height: 240,
       frameRate: {
         ideal: 60,
       },

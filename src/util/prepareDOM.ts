@@ -12,11 +12,23 @@ const changeControlsBtn = elt("change-controls-btn")! as HTMLButtonElement;
 const howToPlay = elt("how-to-play")! as HTMLParagraphElement;
 const cameraNotSupported = elt("camera-not-supported")! as HTMLParagraphElement;
 
+const handCanvas = elt("hand-canvas")! as HTMLCanvasElement;
+const handCanvasContext = handCanvas.getContext("2d")!;
+
+function drawPoint(context: CanvasRenderingContext2D, x: number, y: number) {
+  context.beginPath();
+  context.arc(x, y, 2, 0, 2 * Math.PI);
+  context.fillStyle = "red";
+  context.fill();
+  context.closePath();
+}
+
 function prepareDOM() {
   // If the camera API isn't available, don't show "use camera" button
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
     changeControlsBtn.style.display = "none";
     cameraNotSupported.style.display = "block";
+    handCanvas.style.display = "none";
   } else cameraNotSupported.style.display = "none";
 
   window.onkeydown = (event: KeyboardEvent) => {
@@ -40,23 +52,28 @@ function prepareDOM() {
             howToPlay.innerText = "Open your hand to jump";
 
             predictionIntervalId = setInterval(() => {
-              console.log("Calculating gesture...");
 
-              predictor.predictGesture(cameraVideo).then((gesture) => {
-                if (!gesture) return;
+              handCanvasContext.clearRect(0, 0, 320, 240);
 
-                if (gesture === "paper") {
-                  window.dispatchEvent(
-                    new KeyboardEvent("keydown", { key: " " })
-                  );
-                  setTimeout(
-                    () =>
-                      window.dispatchEvent(
-                        new KeyboardEvent("keyup", { key: " " })
-                      ),
-                    100
-                  );
-                }
+              predictor.estimateHands(cameraVideo).then((handEstimate) => {
+                if (!handEstimate) return;
+
+                for (const handPart in handEstimate.annotations)
+                  for (const point of handEstimate.annotations[handPart])
+                    drawPoint(handCanvasContext, point[0], point[1]);
+
+                predictor.predictGesture(handEstimate).then((gesture) => {
+                  if (!gesture) return;
+
+                  if (gesture === "paper") {
+                    window.dispatchEvent(
+                      new KeyboardEvent("keydown", { key: " " })
+                    );
+                    window.dispatchEvent(
+                      new KeyboardEvent("keyup", { key: " " })
+                    );
+                  }
+                });
               });
             }, 500);
             usingKeyboard = false;
@@ -68,6 +85,7 @@ function prepareDOM() {
           console.warn(err);
         });
     else if (videoStream) {
+      handCanvasContext.clearRect(0, 0, 320, 240);
       videoStream.getTracks().forEach((track) => track.stop());
       videoStream = null;
 
@@ -75,8 +93,7 @@ function prepareDOM() {
       howToPlay.innerHTML = "Tap <kbd>Space</kbd> to jump!";
       changeControlsBtn.innerText = "Use gestures with camera too";
 
-      if (predictionIntervalId)
-        clearInterval(predictionIntervalId);
+      if (predictionIntervalId) clearInterval(predictionIntervalId);
 
       usingKeyboard = true;
     }
