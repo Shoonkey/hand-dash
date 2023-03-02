@@ -1,9 +1,11 @@
 import getCameraStream from "./getCameraStream";
+import Predictor from "./Predictor";
 
 const elt = (id: string) => document.getElementById(id);
 
 let usingKeyboard = true;
 let videoStream: MediaStream | null = null;
+let predictionIntervalId: number;
 
 const cameraVideo = elt("camera-video")! as HTMLVideoElement;
 const changeControlsBtn = elt("change-controls-btn")! as HTMLButtonElement;
@@ -32,10 +34,33 @@ function prepareDOM() {
           cameraVideo.srcObject = stream;
           cameraVideo.play();
 
-          changeControlsBtn.innerText = "Use only keyboard";
-          howToPlay.innerText = "Open your hand to jump";
+          let predictor = new Predictor();
+          predictor.init().then((predictor) => {
+            changeControlsBtn.innerText = "Use only keyboard";
+            howToPlay.innerText = "Open your hand to jump";
 
-          usingKeyboard = false;
+            predictionIntervalId = setInterval(() => {
+              console.log("Calculating gesture...");
+
+              predictor.predictGesture(cameraVideo).then((gesture) => {
+                if (!gesture) return;
+
+                if (gesture === "paper") {
+                  window.dispatchEvent(
+                    new KeyboardEvent("keydown", { key: " " })
+                  );
+                  setTimeout(
+                    () =>
+                      window.dispatchEvent(
+                        new KeyboardEvent("keyup", { key: " " })
+                      ),
+                    100
+                  );
+                }
+              });
+            }, 500);
+            usingKeyboard = false;
+          });
         })
         .catch((err) => {
           changeControlsBtn.style.display = "none";
@@ -50,14 +75,12 @@ function prepareDOM() {
       howToPlay.innerHTML = "Tap <kbd>Space</kbd> to jump!";
       changeControlsBtn.innerText = "Use gestures with camera too";
 
+      if (predictionIntervalId)
+        clearInterval(predictionIntervalId);
+
       usingKeyboard = true;
     }
   };
-
-  // This simulates typing space
-  // ? I'm probably gonna use this simulation with the AI
-  // window.dispatchEvent(new KeyboardEvent("keydown", { key: " " }));
-  // window.dispatchEvent(new KeyboardEvent("keyup", { key: " " }));
 }
 
 export default prepareDOM;

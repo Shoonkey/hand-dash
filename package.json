@@ -14,6 +14,11 @@
     "vite": "^4.1.0"
   },
   "dependencies": {
+    "@tensorflow-models/handpose": "^0.0.7",
+    "@tensorflow/tfjs-backend-webgl": "^3.21.0",
+    "@tensorflow/tfjs-converter": "^3.21.0",
+    "@tensorflow/tfjs-core": "^3.21.0",
+    "fingerpose": "^0.1.0",
     "p5": "^1.5.0"
   }
 }
