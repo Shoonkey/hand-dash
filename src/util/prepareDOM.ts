@@ -58,9 +58,8 @@ function prepareDOM() {
               predictor.estimateHands(cameraVideo).then((handEstimate) => {
                 if (!handEstimate) return;
 
-                for (const handPart in handEstimate.annotations)
-                  for (const point of handEstimate.annotations[handPart])
-                    drawPoint(handCanvasContext, point[0], point[1]);
+                for (const keypoint of handEstimate.keypoints)
+                  drawPoint(handCanvasContext, keypoint.x, keypoint.y);
 
                 predictor.predictGesture(handEstimate).then((gesture) => {
                   if (!gesture) return;
