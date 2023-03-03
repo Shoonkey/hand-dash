@@ -4,7 +4,7 @@ A prototype game built with Node, P5.js and Typescript to explore machine learni
 You can play the game by using the space key on your keyboard or using your webcam, opening and closing your hand.
 The idea for building this came from watching [Erick Wendel](https://github.com/ErickWendel)'s JS Expert Week 07 (his code can be found [here](https://github.com/ErickWendel/semana-javascript-expert07)).
 
-Just like Erick Wendel, I used [TensorflowJS handpose](https://github.com/tensorflow/tfjs-models/tree/master/handpose) and [Fingerpose](https://github.com/andypotato/fingerpose)
+Just like Erick Wendel, I used [TensorflowJS hand pose detection](https://github.com/tensorflow/tfjs-models/tree/master/hand-pose-detection) and [Fingerpose](https://github.com/andypotato/fingerpose)
 
 ## Wanna run it yourself?
 
